@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  www:
+    container_name: testephp
+    build: .
+    restart: always
+    ports:
+      - "8000:80"
+    volumes:
+      - ./www/:/var/www/html
+    networks:
+      - default
+  db:
+    container_name: db_testephp
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: testephp
+      MYSQL_USER: testephp
+      MYSQL_PASS: 1234567
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - default
+  phpmyadmin:
+    container_name: phpmyadmin_testephp
+    image: phpmyadmin:5.1.3
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      MYSQL_USER: testephp
+      MYSQL_PASSWORD: 1234567
+      MYSQL_ROOT_PASSWORD: 123456
